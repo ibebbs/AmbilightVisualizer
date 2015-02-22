@@ -92,11 +92,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="ColorConverter.cs" />
+    <Compile Include="ColorDifference.cs" />
     <Compile Include="IShell.cs" />
+    <Compile Include="Lab.cs" />
     <Compile Include="ObservableExtensions.cs" />
     <Compile Include="Processed.cs" />
     <Compile Include="Provider.cs" />
     <Compile Include="JointSpaceClient.cs" />
+    <Compile Include="Shelf.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
