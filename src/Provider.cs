@@ -10,22 +10,22 @@ namespace Ambilight
 {
     public interface IProvider
     {
-        IObservable<Processed> Processed { get; }
+        IObservable<Processed.IData> Processed { get; }
     }
 
     internal class PollingProvider : IProvider
     {
         public PollingProvider(IJointSpaceClient client)
         {
-            Processed = Observable.Interval(TimeSpan.FromMilliseconds(100)).SelectMany(_ => client.GetAmbilightProcessed()).Publish().RefCount();
+            Processed = Observable.Interval(TimeSpan.FromMilliseconds(50)).SelectMany(_ => client.GetAmbilightProcessed()).Publish().RefCount();
         }
 
-        public IObservable<Processed> Processed { get; private set; }
+        public IObservable<Processed.IData> Processed { get; private set; }
     }
 
-    internal class FastestProvider : IProvider
+    internal class FastProvider : IProvider
     {
-        public FastestProvider(IJointSpaceClient client)
+        public FastProvider(IJointSpaceClient client)
         {
             Subject<Unit> observed = new Subject<Unit>();
 
@@ -34,6 +34,6 @@ namespace Ambilight
             Processed = processedTrigger.SelectMany(_ => client.GetAmbilightProcessed()).Do(_ => observed.OnNext(Unit.Default)).Publish().RefCount();
         }
 
-        public IObservable<Processed> Processed { get; private set; }
+        public IObservable<Processed.IData> Processed { get; private set; }
     }
 }

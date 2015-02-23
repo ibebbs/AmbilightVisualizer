@@ -25,7 +25,7 @@ namespace Ambilight
         private readonly ObservableProperty<Brush> _rightMiddleShelf;
         private readonly ObservableProperty<Brush> _rightBottomShelf;
         private readonly ObservableProperty<int> _fps;
-        private readonly IConnectableObservable<Processed> _source;
+        private readonly IConnectableObservable<Processed.ILayer> _source;
 
         private IDisposable _brushSubscription;
         private IDisposable _providerSubscription;
@@ -46,7 +46,7 @@ namespace Ambilight
 
             _fps = new ObservableProperty<int>(0, this, () => Fps);
 
-            _source = provider.Processed.ObserveOnDispatcher().Publish();
+            _source = provider.Processed.Select(processed => processed.Layers.FirstOrDefault()).Where(value => value != null).ObserveOnDispatcher().Publish();
 
             /*
             _source.Select(processed => processed.Left)

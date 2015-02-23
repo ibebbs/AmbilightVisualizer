@@ -7,7 +7,7 @@ namespace Ambilight
 {
     public interface IJointSpaceClient
     {
-        Task<Processed> GetAmbilightProcessed();
+        Task<Processed.IData> GetAmbilightProcessed();
     }
 
     /// <summary>
@@ -16,19 +16,23 @@ namespace Ambilight
     internal class JointSpaceClient : IJointSpaceClient
     {
         private readonly RestClient _client;
+        private readonly Processed.IFactory _processFactory;
 
-        public JointSpaceClient()
+        public JointSpaceClient(Processed.IFactory processFactory)
         {
-            _client = new RestClient("http://192.168.1.51:1925/");
+            _client = new RestClient("http://192.168.1.62:1925/");
+            _processFactory = processFactory;
         }
 
-        public async Task<Processed> GetAmbilightProcessed()
+        public async Task<Processed.IData> GetAmbilightProcessed()
         {
             RestRequest request = new RestRequest("1/ambilight/processed", Method.GET);
 
-            IRestResponse<Processed> response = await _client.ExecuteGetTaskAsync<Processed>(request);
+            IRestResponse response = await _client.ExecuteGetTaskAsync(request);
 
-            return response.Data;
+            Processed.IData data = _processFactory.FromContent(response.Content);
+
+            return data;
         }
     }
 
@@ -44,15 +48,21 @@ namespace Ambilight
             return Color.FromRgb(colors[0], colors[1], colors[2]);
         }
 
-        public Task<Processed> GetAmbilightProcessed()
+        public Task<Processed.IData> GetAmbilightProcessed()
         {
-            return Task.FromResult(
-                new Processed(
-                    new[] { RandomColor(), RandomColor(), RandomColor(), RandomColor(), RandomColor() },
-                    new[] { RandomColor(), RandomColor(), RandomColor(), RandomColor() },
-                    new[] { RandomColor(), RandomColor(), RandomColor(), RandomColor() },
-                    new[] { RandomColor(), RandomColor(), RandomColor(), RandomColor(), RandomColor() }
-                )
+            return Task.FromResult<Processed.IData>(
+                new Processed.Data
+                {
+                    Layers = new [] { 
+                        new Processed.Layer
+                        {
+                            Left = new[] { RandomColor(), RandomColor(), RandomColor(), RandomColor() },
+                            Top = new[] { RandomColor(), RandomColor(), RandomColor(), RandomColor(), RandomColor() },
+                            Right = new[] { RandomColor(), RandomColor(), RandomColor(), RandomColor() },
+                            Bottom = new[] { RandomColor(), RandomColor(), RandomColor(), RandomColor(), RandomColor() }
+                        }
+                    }
+                }
             );
         }
     }

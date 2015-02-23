@@ -43,6 +43,10 @@
     <Reference Include="Caliburn.Micro.Reactive.Extensions">
       <HintPath>packages\Caliburn.Micro.Reactive.Extensions.1.0.0.0\lib\portable-net45+win+wp80\Caliburn.Micro.Reactive.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp">
       <HintPath>packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
@@ -97,7 +101,8 @@
     <Compile Include="IShell.cs" />
     <Compile Include="Lab.cs" />
     <Compile Include="ObservableExtensions.cs" />
-    <Compile Include="Processed.cs" />
+    <Compile Include="Processed\Processed.cs" />
+    <Compile Include="Processed\Factory.cs" />
     <Compile Include="Provider.cs" />
     <Compile Include="JointSpaceClient.cs" />
     <Compile Include="Shelf.cs" />

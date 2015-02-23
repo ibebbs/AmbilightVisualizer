@@ -17,10 +17,11 @@ namespace Ambilight
         {
             _container = new SimpleContainer();
 
+            _container.Singleton<Processed.IFactory, Processed.Factory>();
             _container.Singleton<IWindowManager, WindowManager>();
             _container.Singleton<IEventAggregator, EventAggregator>();
-            _container.Singleton<IProvider, FastestProvider>();
-            _container.Singleton<IJointSpaceClient, NullJoinSpaceClient>();
+            _container.Singleton<IProvider, PollingProvider>();
+            _container.Singleton<IJointSpaceClient, JointSpaceClient>();
             _container.PerRequest<IShell, ShellViewModel>();
         }
 
